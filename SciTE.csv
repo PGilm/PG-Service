@@ -1,0 +1,52 @@
+COMMAND NAME,KEYBOARD SHORTCUT
+Magnify text size,Ctrl+NumKey+
+Reduce text size,Ctrl+NumKey-
+Normal text size,Ctrl+NumKey/
+Cycle recent files,Ctrl+Tab
+Indent block,Tab
+Dedent block,Shift+Tab
+Delete to start of word,Ctrl+BackSpace
+Delete to end of word,Ctrl+Del
+Delete to start of line,Ctrl+Shift+BackSpace
+Delete to end of line,Ctrl+Shift+Del
+Go to top,Ctrl+Home
+Extend selection to start of document,Ctrl+Shift+Home
+Go to start of display line,Alt+Home
+Go to end,Ctrl+End
+Extend selection to end of document,Ctrl+Shift+End
+Go to end of display line,Alt+End
+Expand a fold,Ctrl+NumKey*
+Contract a fold,Ctrl+NumKey*
+Select to next bookmark,Alt+F2
+Select to previous bookmark,Alt+Shift+F2
+Find selection,Ctrl+F3
+Find selection backwards,Ctrl+Shift+F3
+Scroll up,Ctrl+Up
+Scroll down,Ctrl+Down
+Line cut,Ctrl+L
+Line copy,Ctrl+Shift+T
+Line delete,Ctrl+Shift+L
+Line transpose with previous,Ctrl+T
+Selection duplicate,Ctrl+D
+Find matching preprocessor conditional,Ctrl+K
+Select to matching preprocessor conditional,Ctrl+Shift+K
+Find matching preprocessor conditional backwards,Ctrl+J
+Select to matching preprocessor conditional backwards,Ctrl+Shift+J
+Previous paragraph,Ctrl+[
+Extend selection to previous paragraph,Ctrl+Shift+[
+Next paragraph,Ctrl+]
+Extend selection to next paragraph,Ctrl+Shift+]
+Previous word,Ctrl+Left
+Extend selection to previous word,Ctrl+Shift+Left
+Next word,Ctrl+Right
+Extend selection to next word,Ctrl+Shift+Right
+Previous word part,Ctrl+/
+Extend selection to previous word part,Ctrl+Shift+/
+Next word part,Ctrl+\
+Extend selection to next word part,Ctrl+Shift+\
+Select left rectangle,Alt+Shift+Left
+Select right rectangle,Alt+Shift+Right
+Select up rectangle,Alt+Shift+Up
+Select down rectangle,Alt+Shift+Down
+Extend rectangular selection to start of line,Alt+Shift+Home
+Extend rectangular selection to end of line,Alt+Shift+End

@@ -1,0 +1,13 @@
+COMMAND NAME,KEYBOARD SHORTCUT
+Home,h
+Now playing,[
+Favorites,h{down 7}{right}
+Library,;
+Play,x
+Pause,c
+Synchronize,h{down 10}{right}{pgup 2}{down 10}{right}
+Choose player,h{down 10}{right}{pgup 2}{down 4}{right}
+Settings,h{down 10}{right}
+Left,j
+Right,l
+Search,/

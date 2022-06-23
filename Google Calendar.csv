@@ -1,0 +1,19 @@
+COMMAND NAME,KEYBOARD SHORTCUT
+next period,j
+previous period,k
+today,t
+Day view,d
+Week view,w
+Month view,m
+Custom view,x
+Agenda view,a
+Create event,C
+Quick add event,Q
+Event details,E
+Delete event,Backspace
+Undo,Ctrl+z
+search box,/
+add a calendar box,Shift++
+Print,Ctrl+P
+Settings,S
+list shortcuts,Ctrl+?

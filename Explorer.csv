@@ -1,0 +1,20 @@
+COMMAND NAME,KEYBOARD SHORTCUT
+Address Bar,Alt+D
+Bottom,End
+Close Window,Ctrl+W
+Collapse Selection,Left
+Containing Folder,Alt+Up
+Expand Selection,Right
+Folders Above,Ctrl+Shift+E
+Maximize,F11
+Minimize,F11
+New Folder,Ctrl+Shift+N
+New Window,Ctrl+N
+Next Folder,Alt+Right
+Preview Pane,Alt+P
+Previous Folder,Alt+Left
+Properties,Alt+Enter
+Search Box,Ctrl+E
+Top,Home
+Collapse Folder,Shift+Numkey-
+Subfolders,Shift+Numkey*

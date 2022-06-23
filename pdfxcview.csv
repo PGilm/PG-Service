@@ -1,0 +1,69 @@
+COMMAND NAME,KEYBOARD SHORTCUT
+Fit Page,Ctrl+1
+Fit Width,Ctrl+2
+Actual Size,Ctrl+0
+Previous View,Alt+Left
+Next View,Alt+Right
+Zoom In,Ctrl+Numkey+
+Zoom Out,Ctrl+Numkey-
+Zoom,Ctrl+Shift+M
+Tools,Alt+T
+Hand Tool,{Alt+T}B{Enter}
+Select Text,{Alt+T}B{Down 2}{Enter}
+Snapshot,{Alt+T}B{Down}{Enter}
+Highlight,{Alt+T}C{Down 5}{Right}{Enter}
+Rectangle,{Alt+T}C{Down 10}{Right}{Enter}
+Text Box,{Alt+T}C{Down 3}{Right}{Enter}
+Typewriter,{Alt+T}C{Down 2}{Right}{Enter}
+Find,Ctrl+F
+Find Next,F3
+Find Previous,Shift+F3
+Search,Ctrl+Shift+F
+Search Selected Text,Ctrl+Alt+F
+Comments Pane,Ctrl+M
+Layers,Ctrl+L
+Save,Ctrl+S
+Save As,Ctrl+Shift+S
+Close,Ctrl+W
+Open,Ctrl+O
+Print,Ctrl+P
+Undo That,Ctrl+Z
+Redo That,Ctrl+Y
+Bookmarks,Ctrl+B
+Clockwise,Ctrl+Shift+Numkey+
+Counterclockwise,Ctrl+Shift+Numkey-
+Rotate,Ctrl+Shift+R
+Fields,Ctrl+I
+Preferences,Ctrl+K
+First Page,Home
+Next Page,Right
+Previous Page,Left
+Last Page,End
+Go To Page,Ctrl+Shift+N
+Show Thumbnails,Ctrl+T
+OCR Pages,Ctrl+Shift+C
+File,Alt+F
+Edit,Alt+E
+Document,Alt+D
+Comments,Alt+C
+Document Properties,Ctrl+D
+Window,Alt+W
+Help,Alt+H
+Show All Bars,F11
+Hide All Bars,F11
+Show Text Formatting Toolbar,Ctrl+E
+Hide Text Formatting Toolbar,Ctrl+E
+Show Toolbar,F8
+Hide Toolbar,F8
+Show Menu Bar,F9
+Hide Menu Bar,F9
+Properties Toolbar,Ctrl+E
+Select All,Ctrl+A
+Copy That,Ctrl+C
+Cut That,Ctrl+X
+Paste That,Ctrl+V
+Delete That,Delete
+Delete Pages,Ctrl+Shift+D
+Contents,F1
+Crop Pages,Ctrl+Shift+T
+Full Screen,F12
