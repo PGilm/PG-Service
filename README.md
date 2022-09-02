@@ -10,7 +10,7 @@ corresponding to keyboard shortcuts.
 INSTRUCTIONS: 
 IN SHORT: 
   1. SET UP a CSV file of COMMAND NAMEs and KEYBOARD SHORTCUTs (using 
-SendSystemKeys <a href="(https://www.nuance.com/products/help/dragon/dragon-for-pc/scriptref/Content/scrptref/key_names.htm)" target="_blank">key names</a>). 
+SendSystemKeys [key names](https://www.nuance.com/products/help/dragon/dragon-for-pc/scriptref/Content/scrptref/key_names.htm){target="_blank"}). 
   2. RUN Make Dragon Commands to create a Dragon XML file. 
   3. IMPORT this XML file into the Dragon Command Browser and, when done, 
   4. Change the properties of the newly imported commands (they will be set to the 
@@ -20,4 +20,4 @@ SendSystemKeys <a href="(https://www.nuance.com/products/help/dragon/dragon-for-
   5. GO into the application and say "What Can I Say" to see your commands. 
   6. Have fun! 
 
-IN DETAIL: RTM (that is, see the <a href="(https://github.com/PGilm/Make-Dragon-Commands/blob/main/Make%20Dragon%20Commands.pdf)" target="_blank">.pdf for full instructions</a> . . .)
+IN DETAIL: RTM (that is, see the [.pdf for full instructions](https://github.com/PGilm/Make-Dragon-Commands/blob/main/Make%20Dragon%20Commands.pdf){target="_blank"} . . .)
