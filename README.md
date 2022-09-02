@@ -10,7 +10,7 @@ corresponding to keyboard shortcuts.
 INSTRUCTIONS: 
 IN SHORT: 
   1. SET UP a CSV file of COMMAND NAMEs and KEYBOARD SHORTCUTs (using 
-SendSystemKeys key names). 
+SendSystemKeys [key names](https://www.nuance.com/products/help/dragon/dragon-for-pc/scriptref/Content/scrptref/key_names.htm)). 
   2. RUN Make Dragon Commands to create a Dragon XML file. 
   3. IMPORT this XML file into the Dragon Command Browser and, when done, 
   4. Change the properties of the newly imported commands (they will be set to the 
