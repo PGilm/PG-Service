@@ -20,4 +20,4 @@ SendSystemKeys key names).
   5. GO into the application and say "What Can I Say" to see your commands. 
   6. Have fun! 
 
-IN DETAIL: RTM (that is, see the .pdf for full instructions . . .)
+IN DETAIL: RTM (that is, see the [.pdf for full instructions](https://github.com/PGilm/Make-Dragon-Commands/blob/main/Make%20Dragon%20Commands.pdf) . . .)
