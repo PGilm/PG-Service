@@ -1,4 +1,4 @@
-# Make-Dragon-Commands
+# Make-Dragon-Commands (C) PG Service 2016
 
 Make Dragon Commands  Ver. 0.8  original content (C) 2016 PG Service  
 Use As-Is and at Your Sole Risk. 
