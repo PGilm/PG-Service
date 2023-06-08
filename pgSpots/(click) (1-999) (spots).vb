@@ -1,6 +1,6 @@
 '#Language "WWB-COM"
 Option Explicit
-' PG Spots (C) PG Service
+' PG Spots (C) PG Service 2022
 ' Special "clicks" and keep those SpeechStart+ Circles appearing!
 Declare Function keybd_event Lib "user32.dll" _
 	(ByVal vK As Long, bS As Long, ByVal Fl As Long, ByVal exI As Long) As Long
