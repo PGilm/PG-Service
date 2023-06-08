@@ -1,0 +1,20 @@
+﻿COMMAND NAME,KEYBOARD SHORTCUT
+T 1,{Win+b}{Enter}
+T 2,{Win+b}{Right}{Shift+F10}
+T 3,{Win+b}{Right 2}{Shift+F10}
+T 4,{Win+b}{Right 3}{Shift+F10}
+T 5,{Win+b}{Right 4}{Shift+F10}
+T 6,{Win+b}{Right 5}{Shift+F10}
+T 7,{Win+b}{Right 6}{Shift+F10}
+T 8,{Win+b}{Right 7}{Shift+F10}
+T 9,{Win+b}{Right 8}{Shift+F10}
+T 10,{Win+b}{Right 9}{Shift+F10}
+Tray 1,Win+1
+Tray 2,Win+2
+Tray 3,Win+3
+Tray 4,Win+4
+Tray 5,Win+5
+Tray 6,Win+6
+Tray 7,Win+7
+Tray 8,Win+8
+Tray 9,Win+9
