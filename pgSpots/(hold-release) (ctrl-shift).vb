@@ -1,7 +1,7 @@
 Declare Function keybd_event Lib "user32.dll" _
 	(ByVal vK As Long, bS As Long, _
 		ByVal Fl As Long, ByVal exI As Long) As Long
-' PG Spots (C) PG Service
+	' PG Spots (C) PG Service 2022
 ' For holding and releasing modifier keys
 Sub Main
 	If ListVar1 = "Hold" Then
