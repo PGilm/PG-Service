@@ -1,6 +1,6 @@
 '#Language "WWB-COM"
 Option Explicit
-' PG Spots (C) PG Service
+' PG Spots (C) PG Service 2022
 ' Keep those SpeechStart+ Circles appearing!
 ' <1-999> is a list of numerals 1 through 999 (you could make it shorter which may help performance)
 ' <spots> is a list of the PCbyVoice SpeechStart+ indicators plus the complex phrase "Circles\Spots" which lets you pick what happens with "Spots" commands
