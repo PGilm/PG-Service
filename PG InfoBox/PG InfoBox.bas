@@ -1,4 +1,4 @@
-' PG InfoBox (C) PG Service
+' PG InfoBox (C) PG Service 2013
 ' A self-dismissing Info box https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=17305&discTab=true&messid=96759&parentid=96691&FTVAR_FORUMVIEWTMP=Single
 ' pgInfoBox(dispText As String, dispTime As Integer)
 '
