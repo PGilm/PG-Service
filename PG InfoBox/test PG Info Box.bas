@@ -1,12 +1,12 @@
 '#Language "WWB-COM"
 Option Explicit
-' PG InfoBox (C) PG Service
+' PG InfoBox (C) PG Service 2013
 Sub Main
   DoEvents
 	pgInfoBox("Your PG InfoBox (C) PG Service is working."&vbCrLf&vbCrLf&vbTab&"Just Wait . . .",2)
 End Sub
 '
-' A self-dismissing Info box
+' A self-dismissing Info box https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=17305&discTab=true&messid=96759&parentid=96691&FTVAR_FORUMVIEWTMP=Single
 ' pgInfoBox(dispText As String, dispTime As Integer)
 '
 '  Note: if dispTime = 0, no auto-dismiss
