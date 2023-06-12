@@ -1,4 +1,4 @@
-# pgSpots (C) PG Service 2022
+# PG Spots (C) PG Service 2022
 This is stuff I need to work with that I'm *willing to share in accordance with the below terms* . . .
 
 Typically, that means .vbs or .ahk, and often Nuance Dragon Professional (dictation software) advanced scripting (DAS) or voice commands (DVC).
