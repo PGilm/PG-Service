@@ -1,8 +1,11 @@
+backspace
+control backspace
 control down
 control left
 control page down
 control page up
 control right
+control shift backspace
 control shift down
 control shift left
 control shift page down
@@ -17,6 +20,7 @@ left
 page down
 page up
 right
+shift backspace
 shift down
 shift left
 shift page down
