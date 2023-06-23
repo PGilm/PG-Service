@@ -1,8 +1,13 @@
+backspace
+control backspace
+control delete
 control down
 control left
 control page down
 control page up
 control right
+control shift backspace
+control shift delete
 control shift down
 control shift left
 control shift page down
@@ -12,11 +17,14 @@ control shift tab
 control shift up
 control tab
 control up
+delete
 down
 left
 page down
 page up
 right
+shift backspace
+shift delete
 shift down
 shift left
 shift page down
