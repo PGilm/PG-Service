@@ -1,0 +1,1356 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.nuance.com/NaturallySpeaking/Support/MyCommands/MyCmds12.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="[1-999] [spots]" group="PG Spots (C) PG Service" enabled="true" states="">
+			<description>Keep those SpeechStart+ Circles appearing!</description>
+			<contents type="SCRIPT">
+<![CDATA['#Language "WWB-COM"
+Option Explicit
+' PG Spots (C) PG Service
+' Keep those SpeechStart+ Circles appearing!
+' <1-999> is a list of numerals 1 through 999 (you could make it shorter which may help performance)
+' <spots> is a list of the PCbyVoice SpeechStart+ indicators plus the complex phrase "Circles\Spots" which lets you pick what happens with "Spots" commands
+'
+' Say: "<1-99> <spots>"
+Sub Main
+	Dim n, o, p
+	p = EngineControl.RecognitionMode  '  svae current mode
+	EngineControl.RecognitionMode = dgnrecmodeCommand  '  set to command mode
+	' Beep
+	o = ListVar2  '  numbers, circles or flags
+	If InStr(o, "\") Then o = Left(o, InStr(o,"\")-1)  '  "spots" is complex
+	n = NumtoStr(ListVar1)  '  need to stringify numbers
+	EngineControl.RecognitionMimic("CLICK " & n)  '  some magic here
+	If p = 0 Then EngineControl.RecognitionMimic("start normal mode")  '  restore mode from p
+	If p = 1 Then EngineControl.RecognitionMimic("start dictation mode")
+	If p = 2 Then EngineControl.RecognitionMimic("start command mode")
+	If p = 3 Then EngineControl.RecognitionMimic("start numbers mode")
+	If p = 4 Then EngineControl.RecognitionMimic("start spell mode")
+	EngineControl.RecognitionMimic("SHOW " & o)  '  the magic SpeechStart+ incantation
+End Sub
+'
+Function NumtoStr(x)
+	If Len(x)=3 Then  '  there is a hundreds digit
+		NumtoStr = ones(Left(x,1)) & " hundred "
+		x = Mid(x,2)  '  trim off hundreds
+	End If  '  End hundreds processing
+	If Len(x)=2 Then  '  there is a tens digit
+		If CInt(x) < 20 Then
+			NumtoStr = Trim(NumtoStr & ones(x))
+		Else
+			NumtoStr = Trim(NumtoStr & tones(Left(x,1)) & " " & ones(Right(x,1)))
+		End If
+	Else
+		NumtoStr = ones(x)
+	End If  '  End tens processing
+End Function
+'
+Function ones(a)
+    Select Case a
+        Case "0", "00"
+            ones=""
+	Case "1", "01"
+            ones="one"
+        Case "2", "02"
+            ones="two"
+        Case "3", "03"
+            ones="three"
+        Case "4", "04"
+            ones="four"
+	Case "5", "05"
+            ones="five"
+        Case "6", "06"
+            ones="six"
+        Case "7", "07"
+            ones="seven"
+        Case "8", "08"
+            ones="eight"
+        Case "9", "09"
+            ones="nine"
+        Case "10"
+            ones="ten"
+        Case "11"
+            ones="eleven"
+        Case "12"
+            ones="twelve"
+        Case "13"
+            ones="thirteen"
+        Case "14"
+            ones="fourteen"
+        Case "15"
+            ones="fifteen"
+        Case "16"
+            ones="sixteen"
+        Case "17"
+            ones="seventeen"
+        Case "18"
+            ones="eighteen"
+        Case "19"
+            ones="nineteen"
+    End Select
+End Function
+'
+Function tones(a)
+    Select Case a
+        Case "2"
+            tones="twenty"
+        Case "3"
+            tones="thirty"
+        Case "4"
+            tones="forty"
+        Case "5"
+            tones="fifty"
+        Case "6"
+            tones="sixty"
+        Case "7"
+            tones="seventy"
+        Case "8"
+            tones="eighty"
+        Case "9"
+            tones="ninety"
+    End Select
+End Function
+'
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[click] [1-999] [spots]" group="PG Spots (C) PG Service" enabled="true" states="">
+			<description>Special &quot;clicks&quot; and keep those SpeechStart+ Circles appearing!</description>
+			<contents type="SCRIPT">
+<![CDATA['#Language "WWB-COM"
+Option Explicit
+' PG Spots (C) PG Service
+' Special "clicks" and keep those SpeechStart+ Circles appearing!
+Declare Function keybd_event Lib "user32.dll" _
+	(ByVal vK As Long, bS As Long, ByVal Fl As Long, ByVal exI As Long) As Long
+'
+' <click> is a lisy of mouse actions that work with PcByVoice SpeechStart+ as extended herein
+' <1-999> is a list of numerals 1 through 999 (you could make it shorter which may help performance)
+' <spots> is a list of the PCbyVoice SpeechStart+ indicators plus the complex word "[preferred indicator]\Spots" 
+'  which lets you pick what happens with "Spots" commands (perhaps add a "SHOW Spots" too?)
+'
+' Say: "<click> <1-99> <spots>"
+Sub Main
+	Dim m, n, o, p
+	p = EngineControl.RecognitionMode  '  svae current mode
+	EngineControl.RecognitionMode = dgnrecmodeCommand  '  set to command mode
+	' Beep
+	o = ListVar3  '  numbers, circles or flags
+		If InStr(o, "\") Then o = Left(o, InStr(o,"\")-1)  '  handle complex "spots"
+	n = NumtoStr(ListVar2)  '  need to stringify numbers
+	m = Left(ListVar1, InStr(ListVar1,"\")-1)  '  SpeechStart+ prefix
+	If InStr(ListVar1, "Control") Or InStr(ListVar1, "Shift") Then
+		keybd_event(&H11,0,&H0,0)  '  hold control
+		EngineControl.RecognitionMimic("SHOW " & o)  '  may or may not be necessary
+		' SAG needed
+	End If
+	If InStr(ListVar1, "Shift") Then keybd_event(&H10,0,&H0,0)  '  hold shift
+	EngineControl.RecognitionMimic(m & " " & n)  '  The real magic
+	If InStr(ListVar1, "Shift") Then EngineControl.RecognitionMimic("Release Shift")
+	If InStr(ListVar1, "Control") Or InStr(ListVar1, "Shift") Then EngineControl.RecognitionMimic("Release Control")
+'  restore the mode from p (cannot use RecognitionMode as it will cancel Command Mode before the above RecognitionMimics fire
+	If p = 0 Then EngineControl.RecognitionMimic("start normal mode")
+	If p = 1 Then EngineControl.RecognitionMimic("start dictation mode")
+	If p = 2 Then EngineControl.RecognitionMimic("start command mode")
+	If p = 3 Then EngineControl.RecognitionMimic("start numbers mode")
+	If p = 4 Then EngineControl.RecognitionMimic("start spell mode")
+	EngineControl.RecognitionMimic("SHOW " & o)  '  The magic SpeechStart+ incantation
+End Sub
+'
+Function NumtoStr(x)
+	If Len(x)=3 Then  '  there is a hundreds digit
+		NumtoStr = ones(Left(x,1)) & " hundred "
+		x = Mid(x,2)  '  trim off hundreds 
+	End If  '  End hundreds processing
+	If Len(x)=2 Then  '  there is a tens digit
+		If CInt(x) < 20 Then
+			NumtoStr = Trim(NumtoStr & ones(x))
+		Else
+			NumtoStr = Trim(NumtoStr & tones(Left(x,1)) & " " & ones(Right(x,1)))
+		End If
+	Else
+		NumtoStr = ones(x)
+	End If  '  End tens processing
+End Function
+'
+Function ones(a)
+    Select Case a
+        Case "0", "00"
+            ones=""
+	Case "1", "01"
+            ones="one"
+        Case "2", "02"
+            ones="two"
+        Case "3", "03"
+            ones="three"
+        Case "4", "04"
+            ones="four"
+	Case "5", "05"
+            ones="five"
+        Case "6", "06"
+            ones="six"
+        Case "7", "07"
+            ones="seven"
+        Case "8", "08"
+            ones="eight"
+        Case "9", "09"
+            ones="nine"
+        Case "10"
+            ones="ten"
+        Case "11"
+            ones="eleven"
+        Case "12"
+            ones="twelve"
+        Case "13"
+            ones="thirteen"
+        Case "14"
+            ones="fourteen"
+        Case "15"
+            ones="fifteen"
+        Case "16"
+            ones="sixteen"
+        Case "17"
+            ones="seventeen"
+        Case "18"
+            ones="eighteen"
+        Case "19"
+            ones="nineteen"
+    End Select
+End Function
+'
+Function tones(a)
+    Select Case a
+        Case "2"
+            tones="twenty"
+        Case "3"
+            tones="thirty"
+        Case "4"
+            tones="forty"
+        Case "5"
+            tones="fifty"
+        Case "6"
+            tones="sixty"
+        Case "7"
+            tones="seventy"
+        Case "8"
+            tones="eighty"
+        Case "9"
+            tones="ninety"
+    End Select
+End Function
+'
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[hold-release] [ctrl-shift]" group="PG Spots (C) PG Service" enabled="true" states="">
+			<description>For holding and releasing modifier keys</description>
+			<contents type="SCRIPT">
+<![CDATA[Declare Function keybd_event Lib "user32.dll" _
+	(ByVal vK As Long, bS As Long, _
+		ByVal Fl As Long, ByVal exI As Long) As Long
+' PG Spots (C) PG Service
+' For holding and releasing modifier keys
+Sub Main
+	If ListVar1 = "Hold" Then
+		If ListVar2 = "Control" Then
+			keybd_event(&H11, 0, &H0, 0)  ' CTRL key Down
+		Else  '  "Shift"
+			keybd_event(&H10, 0, &H0, 0)  ' SHIFT key Down
+		End If
+	Else  '  "Release"
+		If ListVar2 = "Control" Then
+			keybd_event(&H11, 0, &H2, 0)  ' CTRL key Up
+		Else  '  "Shift"
+			keybd_event(&H10, 0, &H2, 0)  ' SHIFT key Up
+		End If
+	End If
+End Sub
+'
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[spots]" group="PG Spots (C) PG Service" enabled="true" states="">
+			<description>shows/hides SpeechStart+ spots</description>
+			<contents type="SCRIPT">
+<![CDATA['#Language "WWB-COM"
+Option Explicit
+' PG Spots (C) PG Service
+' shows or hides SpeechStart+ spots
+Sub Main
+	If InStr(ListVar1, "Hide") Then
+		EngineControl.RecognitionMimic("CANCEL")
+	ElseIf InStr(ListVar1, "\") Then
+		EngineControl.RecognitionMimic("SHOW " + Left(ListVar1, InStr(ListVar1, "\")-1))
+	Else
+		EngineControl.RecognitionMimic("SHOW " + ListVar1)
+	End If
+End Sub
+'
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="click">
+			<Value><![CDATA[CLICK\Click]]></Value>
+			<Value><![CDATA[CLICK\Control]]></Value>
+			<Value><![CDATA[CLICK\Control Click]]></Value>
+			<Value><![CDATA[CLICK\Control Left Click]]></Value>
+			<Value><![CDATA[CLICK\Left Click]]></Value>
+			<Value><![CDATA[CLICK\Shift]]></Value>
+			<Value><![CDATA[CLICK\Shift Click]]></Value>
+			<Value><![CDATA[MOUSE OVER\Hover]]></Value>
+			<Value><![CDATA[MOUSE OVER\Mouse Over]]></Value>
+			<Value><![CDATA[CLICK\Shift Left Click]]></Value>
+			<Value><![CDATA[DOUBLE Click\Double Click]]></Value>
+			<Value><![CDATA[DRAG\Drag]]></Value>
+			<Value><![CDATA[RIGHT Click\Control Right Click]]></Value>
+			<Value><![CDATA[RIGHT Click\Right Click]]></Value>
+			<Value><![CDATA[RIGHT Click\Shift Right Click]]></Value>
+			<Value><![CDATA[RIGHT Drag\Right Drag]]></Value>
+		</List>
+
+		<List name="spots">
+			<Value><![CDATA[Circles]]></Value>
+			<Value><![CDATA[Circles\Spots]]></Value>
+			<Value><![CDATA[Flags]]></Value>
+			<Value><![CDATA[Flags\Spa]]></Value>
+			<Value><![CDATA[Hide]]></Value>
+			<Value><![CDATA[Hide Circles]]></Value>
+			<Value><![CDATA[Hide Flags]]></Value>
+			<Value><![CDATA[Hide Numbers]]></Value>
+			<Value><![CDATA[Hide Spa]]></Value>
+			<Value><![CDATA[Hide Spots]]></Value>
+			<Value><![CDATA[Numbers]]></Value>
+		</List>
+
+		<List name="ctrl-shift">
+			<Value><![CDATA[Control]]></Value>
+			<Value><![CDATA[Contrtol Key]]></Value>
+			<Value><![CDATA[Shift]]></Value>
+			<Value><![CDATA[Shift Key]]></Value>
+		</List>
+
+		<List name="hold-release">
+			<Value><![CDATA[Hold]]></Value>
+			<Value><![CDATA[Hold the]]></Value>
+			<Value><![CDATA[Release]]></Value>
+			<Value><![CDATA[Release the]]></Value>
+		</List>
+
+		<List name="1-999">
+			<Value><![CDATA[1]]></Value>
+			<Value><![CDATA[10]]></Value>
+			<Value><![CDATA[100]]></Value>
+			<Value><![CDATA[101]]></Value>
+			<Value><![CDATA[102]]></Value>
+			<Value><![CDATA[103]]></Value>
+			<Value><![CDATA[104]]></Value>
+			<Value><![CDATA[105]]></Value>
+			<Value><![CDATA[106]]></Value>
+			<Value><![CDATA[107]]></Value>
+			<Value><![CDATA[108]]></Value>
+			<Value><![CDATA[109]]></Value>
+			<Value><![CDATA[11]]></Value>
+			<Value><![CDATA[110]]></Value>
+			<Value><![CDATA[111]]></Value>
+			<Value><![CDATA[112]]></Value>
+			<Value><![CDATA[113]]></Value>
+			<Value><![CDATA[114]]></Value>
+			<Value><![CDATA[115]]></Value>
+			<Value><![CDATA[116]]></Value>
+			<Value><![CDATA[117]]></Value>
+			<Value><![CDATA[118]]></Value>
+			<Value><![CDATA[119]]></Value>
+			<Value><![CDATA[12]]></Value>
+			<Value><![CDATA[120]]></Value>
+			<Value><![CDATA[121]]></Value>
+			<Value><![CDATA[122]]></Value>
+			<Value><![CDATA[123]]></Value>
+			<Value><![CDATA[124]]></Value>
+			<Value><![CDATA[125]]></Value>
+			<Value><![CDATA[126]]></Value>
+			<Value><![CDATA[127]]></Value>
+			<Value><![CDATA[128]]></Value>
+			<Value><![CDATA[129]]></Value>
+			<Value><![CDATA[13]]></Value>
+			<Value><![CDATA[130]]></Value>
+			<Value><![CDATA[131]]></Value>
+			<Value><![CDATA[132]]></Value>
+			<Value><![CDATA[133]]></Value>
+			<Value><![CDATA[134]]></Value>
+			<Value><![CDATA[135]]></Value>
+			<Value><![CDATA[136]]></Value>
+			<Value><![CDATA[137]]></Value>
+			<Value><![CDATA[138]]></Value>
+			<Value><![CDATA[139]]></Value>
+			<Value><![CDATA[14]]></Value>
+			<Value><![CDATA[140]]></Value>
+			<Value><![CDATA[141]]></Value>
+			<Value><![CDATA[142]]></Value>
+			<Value><![CDATA[143]]></Value>
+			<Value><![CDATA[144]]></Value>
+			<Value><![CDATA[145]]></Value>
+			<Value><![CDATA[146]]></Value>
+			<Value><![CDATA[147]]></Value>
+			<Value><![CDATA[148]]></Value>
+			<Value><![CDATA[149]]></Value>
+			<Value><![CDATA[15]]></Value>
+			<Value><![CDATA[150]]></Value>
+			<Value><![CDATA[151]]></Value>
+			<Value><![CDATA[152]]></Value>
+			<Value><![CDATA[153]]></Value>
+			<Value><![CDATA[154]]></Value>
+			<Value><![CDATA[155]]></Value>
+			<Value><![CDATA[156]]></Value>
+			<Value><![CDATA[157]]></Value>
+			<Value><![CDATA[158]]></Value>
+			<Value><![CDATA[159]]></Value>
+			<Value><![CDATA[16]]></Value>
+			<Value><![CDATA[160]]></Value>
+			<Value><![CDATA[161]]></Value>
+			<Value><![CDATA[162]]></Value>
+			<Value><![CDATA[163]]></Value>
+			<Value><![CDATA[164]]></Value>
+			<Value><![CDATA[165]]></Value>
+			<Value><![CDATA[166]]></Value>
+			<Value><![CDATA[167]]></Value>
+			<Value><![CDATA[168]]></Value>
+			<Value><![CDATA[169]]></Value>
+			<Value><![CDATA[17]]></Value>
+			<Value><![CDATA[170]]></Value>
+			<Value><![CDATA[171]]></Value>
+			<Value><![CDATA[172]]></Value>
+			<Value><![CDATA[173]]></Value>
+			<Value><![CDATA[174]]></Value>
+			<Value><![CDATA[175]]></Value>
+			<Value><![CDATA[176]]></Value>
+			<Value><![CDATA[177]]></Value>
+			<Value><![CDATA[178]]></Value>
+			<Value><![CDATA[179]]></Value>
+			<Value><![CDATA[18]]></Value>
+			<Value><![CDATA[180]]></Value>
+			<Value><![CDATA[181]]></Value>
+			<Value><![CDATA[182]]></Value>
+			<Value><![CDATA[183]]></Value>
+			<Value><![CDATA[184]]></Value>
+			<Value><![CDATA[185]]></Value>
+			<Value><![CDATA[186]]></Value>
+			<Value><![CDATA[187]]></Value>
+			<Value><![CDATA[188]]></Value>
+			<Value><![CDATA[189]]></Value>
+			<Value><![CDATA[19]]></Value>
+			<Value><![CDATA[190]]></Value>
+			<Value><![CDATA[191]]></Value>
+			<Value><![CDATA[192]]></Value>
+			<Value><![CDATA[193]]></Value>
+			<Value><![CDATA[194]]></Value>
+			<Value><![CDATA[195]]></Value>
+			<Value><![CDATA[196]]></Value>
+			<Value><![CDATA[197]]></Value>
+			<Value><![CDATA[198]]></Value>
+			<Value><![CDATA[199]]></Value>
+			<Value><![CDATA[2]]></Value>
+			<Value><![CDATA[20]]></Value>
+			<Value><![CDATA[200]]></Value>
+			<Value><![CDATA[201]]></Value>
+			<Value><![CDATA[202]]></Value>
+			<Value><![CDATA[203]]></Value>
+			<Value><![CDATA[204]]></Value>
+			<Value><![CDATA[205]]></Value>
+			<Value><![CDATA[206]]></Value>
+			<Value><![CDATA[207]]></Value>
+			<Value><![CDATA[208]]></Value>
+			<Value><![CDATA[209]]></Value>
+			<Value><![CDATA[21]]></Value>
+			<Value><![CDATA[210]]></Value>
+			<Value><![CDATA[211]]></Value>
+			<Value><![CDATA[212]]></Value>
+			<Value><![CDATA[213]]></Value>
+			<Value><![CDATA[214]]></Value>
+			<Value><![CDATA[215]]></Value>
+			<Value><![CDATA[216]]></Value>
+			<Value><![CDATA[217]]></Value>
+			<Value><![CDATA[218]]></Value>
+			<Value><![CDATA[219]]></Value>
+			<Value><![CDATA[22]]></Value>
+			<Value><![CDATA[220]]></Value>
+			<Value><![CDATA[221]]></Value>
+			<Value><![CDATA[222]]></Value>
+			<Value><![CDATA[223]]></Value>
+			<Value><![CDATA[224]]></Value>
+			<Value><![CDATA[225]]></Value>
+			<Value><![CDATA[226]]></Value>
+			<Value><![CDATA[227]]></Value>
+			<Value><![CDATA[228]]></Value>
+			<Value><![CDATA[229]]></Value>
+			<Value><![CDATA[23]]></Value>
+			<Value><![CDATA[230]]></Value>
+			<Value><![CDATA[231]]></Value>
+			<Value><![CDATA[232]]></Value>
+			<Value><![CDATA[233]]></Value>
+			<Value><![CDATA[234]]></Value>
+			<Value><![CDATA[235]]></Value>
+			<Value><![CDATA[236]]></Value>
+			<Value><![CDATA[237]]></Value>
+			<Value><![CDATA[238]]></Value>
+			<Value><![CDATA[239]]></Value>
+			<Value><![CDATA[24]]></Value>
+			<Value><![CDATA[240]]></Value>
+			<Value><![CDATA[241]]></Value>
+			<Value><![CDATA[242]]></Value>
+			<Value><![CDATA[243]]></Value>
+			<Value><![CDATA[244]]></Value>
+			<Value><![CDATA[245]]></Value>
+			<Value><![CDATA[246]]></Value>
+			<Value><![CDATA[247]]></Value>
+			<Value><![CDATA[248]]></Value>
+			<Value><![CDATA[249]]></Value>
+			<Value><![CDATA[25]]></Value>
+			<Value><![CDATA[250]]></Value>
+			<Value><![CDATA[251]]></Value>
+			<Value><![CDATA[252]]></Value>
+			<Value><![CDATA[253]]></Value>
+			<Value><![CDATA[254]]></Value>
+			<Value><![CDATA[255]]></Value>
+			<Value><![CDATA[256]]></Value>
+			<Value><![CDATA[257]]></Value>
+			<Value><![CDATA[258]]></Value>
+			<Value><![CDATA[259]]></Value>
+			<Value><![CDATA[26]]></Value>
+			<Value><![CDATA[260]]></Value>
+			<Value><![CDATA[261]]></Value>
+			<Value><![CDATA[262]]></Value>
+			<Value><![CDATA[263]]></Value>
+			<Value><![CDATA[264]]></Value>
+			<Value><![CDATA[265]]></Value>
+			<Value><![CDATA[266]]></Value>
+			<Value><![CDATA[267]]></Value>
+			<Value><![CDATA[268]]></Value>
+			<Value><![CDATA[269]]></Value>
+			<Value><![CDATA[27]]></Value>
+			<Value><![CDATA[270]]></Value>
+			<Value><![CDATA[271]]></Value>
+			<Value><![CDATA[272]]></Value>
+			<Value><![CDATA[273]]></Value>
+			<Value><![CDATA[274]]></Value>
+			<Value><![CDATA[275]]></Value>
+			<Value><![CDATA[276]]></Value>
+			<Value><![CDATA[277]]></Value>
+			<Value><![CDATA[278]]></Value>
+			<Value><![CDATA[279]]></Value>
+			<Value><![CDATA[28]]></Value>
+			<Value><![CDATA[280]]></Value>
+			<Value><![CDATA[281]]></Value>
+			<Value><![CDATA[282]]></Value>
+			<Value><![CDATA[283]]></Value>
+			<Value><![CDATA[284]]></Value>
+			<Value><![CDATA[285]]></Value>
+			<Value><![CDATA[286]]></Value>
+			<Value><![CDATA[287]]></Value>
+			<Value><![CDATA[288]]></Value>
+			<Value><![CDATA[289]]></Value>
+			<Value><![CDATA[29]]></Value>
+			<Value><![CDATA[290]]></Value>
+			<Value><![CDATA[291]]></Value>
+			<Value><![CDATA[292]]></Value>
+			<Value><![CDATA[293]]></Value>
+			<Value><![CDATA[294]]></Value>
+			<Value><![CDATA[295]]></Value>
+			<Value><![CDATA[296]]></Value>
+			<Value><![CDATA[297]]></Value>
+			<Value><![CDATA[298]]></Value>
+			<Value><![CDATA[299]]></Value>
+			<Value><![CDATA[3]]></Value>
+			<Value><![CDATA[30]]></Value>
+			<Value><![CDATA[300]]></Value>
+			<Value><![CDATA[301]]></Value>
+			<Value><![CDATA[302]]></Value>
+			<Value><![CDATA[303]]></Value>
+			<Value><![CDATA[304]]></Value>
+			<Value><![CDATA[305]]></Value>
+			<Value><![CDATA[306]]></Value>
+			<Value><![CDATA[307]]></Value>
+			<Value><![CDATA[308]]></Value>
+			<Value><![CDATA[309]]></Value>
+			<Value><![CDATA[31]]></Value>
+			<Value><![CDATA[310]]></Value>
+			<Value><![CDATA[311]]></Value>
+			<Value><![CDATA[312]]></Value>
+			<Value><![CDATA[313]]></Value>
+			<Value><![CDATA[314]]></Value>
+			<Value><![CDATA[315]]></Value>
+			<Value><![CDATA[316]]></Value>
+			<Value><![CDATA[317]]></Value>
+			<Value><![CDATA[318]]></Value>
+			<Value><![CDATA[319]]></Value>
+			<Value><![CDATA[32]]></Value>
+			<Value><![CDATA[320]]></Value>
+			<Value><![CDATA[321]]></Value>
+			<Value><![CDATA[322]]></Value>
+			<Value><![CDATA[323]]></Value>
+			<Value><![CDATA[324]]></Value>
+			<Value><![CDATA[325]]></Value>
+			<Value><![CDATA[326]]></Value>
+			<Value><![CDATA[327]]></Value>
+			<Value><![CDATA[328]]></Value>
+			<Value><![CDATA[329]]></Value>
+			<Value><![CDATA[33]]></Value>
+			<Value><![CDATA[330]]></Value>
+			<Value><![CDATA[331]]></Value>
+			<Value><![CDATA[332]]></Value>
+			<Value><![CDATA[333]]></Value>
+			<Value><![CDATA[334]]></Value>
+			<Value><![CDATA[335]]></Value>
+			<Value><![CDATA[336]]></Value>
+			<Value><![CDATA[337]]></Value>
+			<Value><![CDATA[338]]></Value>
+			<Value><![CDATA[339]]></Value>
+			<Value><![CDATA[34]]></Value>
+			<Value><![CDATA[340]]></Value>
+			<Value><![CDATA[341]]></Value>
+			<Value><![CDATA[342]]></Value>
+			<Value><![CDATA[343]]></Value>
+			<Value><![CDATA[344]]></Value>
+			<Value><![CDATA[345]]></Value>
+			<Value><![CDATA[346]]></Value>
+			<Value><![CDATA[347]]></Value>
+			<Value><![CDATA[348]]></Value>
+			<Value><![CDATA[349]]></Value>
+			<Value><![CDATA[35]]></Value>
+			<Value><![CDATA[350]]></Value>
+			<Value><![CDATA[351]]></Value>
+			<Value><![CDATA[352]]></Value>
+			<Value><![CDATA[353]]></Value>
+			<Value><![CDATA[354]]></Value>
+			<Value><![CDATA[355]]></Value>
+			<Value><![CDATA[356]]></Value>
+			<Value><![CDATA[357]]></Value>
+			<Value><![CDATA[358]]></Value>
+			<Value><![CDATA[359]]></Value>
+			<Value><![CDATA[36]]></Value>
+			<Value><![CDATA[360]]></Value>
+			<Value><![CDATA[361]]></Value>
+			<Value><![CDATA[362]]></Value>
+			<Value><![CDATA[363]]></Value>
+			<Value><![CDATA[364]]></Value>
+			<Value><![CDATA[365]]></Value>
+			<Value><![CDATA[366]]></Value>
+			<Value><![CDATA[367]]></Value>
+			<Value><![CDATA[368]]></Value>
+			<Value><![CDATA[369]]></Value>
+			<Value><![CDATA[37]]></Value>
+			<Value><![CDATA[370]]></Value>
+			<Value><![CDATA[371]]></Value>
+			<Value><![CDATA[372]]></Value>
+			<Value><![CDATA[373]]></Value>
+			<Value><![CDATA[374]]></Value>
+			<Value><![CDATA[375]]></Value>
+			<Value><![CDATA[376]]></Value>
+			<Value><![CDATA[377]]></Value>
+			<Value><![CDATA[378]]></Value>
+			<Value><![CDATA[379]]></Value>
+			<Value><![CDATA[38]]></Value>
+			<Value><![CDATA[380]]></Value>
+			<Value><![CDATA[381]]></Value>
+			<Value><![CDATA[382]]></Value>
+			<Value><![CDATA[383]]></Value>
+			<Value><![CDATA[384]]></Value>
+			<Value><![CDATA[385]]></Value>
+			<Value><![CDATA[386]]></Value>
+			<Value><![CDATA[387]]></Value>
+			<Value><![CDATA[388]]></Value>
+			<Value><![CDATA[389]]></Value>
+			<Value><![CDATA[39]]></Value>
+			<Value><![CDATA[390]]></Value>
+			<Value><![CDATA[391]]></Value>
+			<Value><![CDATA[392]]></Value>
+			<Value><![CDATA[393]]></Value>
+			<Value><![CDATA[394]]></Value>
+			<Value><![CDATA[395]]></Value>
+			<Value><![CDATA[396]]></Value>
+			<Value><![CDATA[397]]></Value>
+			<Value><![CDATA[398]]></Value>
+			<Value><![CDATA[399]]></Value>
+			<Value><![CDATA[4]]></Value>
+			<Value><![CDATA[40]]></Value>
+			<Value><![CDATA[400]]></Value>
+			<Value><![CDATA[401]]></Value>
+			<Value><![CDATA[402]]></Value>
+			<Value><![CDATA[403]]></Value>
+			<Value><![CDATA[404]]></Value>
+			<Value><![CDATA[405]]></Value>
+			<Value><![CDATA[406]]></Value>
+			<Value><![CDATA[407]]></Value>
+			<Value><![CDATA[408]]></Value>
+			<Value><![CDATA[409]]></Value>
+			<Value><![CDATA[41]]></Value>
+			<Value><![CDATA[410]]></Value>
+			<Value><![CDATA[411]]></Value>
+			<Value><![CDATA[412]]></Value>
+			<Value><![CDATA[413]]></Value>
+			<Value><![CDATA[414]]></Value>
+			<Value><![CDATA[415]]></Value>
+			<Value><![CDATA[416]]></Value>
+			<Value><![CDATA[417]]></Value>
+			<Value><![CDATA[418]]></Value>
+			<Value><![CDATA[419]]></Value>
+			<Value><![CDATA[42]]></Value>
+			<Value><![CDATA[420]]></Value>
+			<Value><![CDATA[421]]></Value>
+			<Value><![CDATA[422]]></Value>
+			<Value><![CDATA[423]]></Value>
+			<Value><![CDATA[424]]></Value>
+			<Value><![CDATA[425]]></Value>
+			<Value><![CDATA[426]]></Value>
+			<Value><![CDATA[427]]></Value>
+			<Value><![CDATA[428]]></Value>
+			<Value><![CDATA[429]]></Value>
+			<Value><![CDATA[43]]></Value>
+			<Value><![CDATA[430]]></Value>
+			<Value><![CDATA[431]]></Value>
+			<Value><![CDATA[432]]></Value>
+			<Value><![CDATA[433]]></Value>
+			<Value><![CDATA[434]]></Value>
+			<Value><![CDATA[435]]></Value>
+			<Value><![CDATA[436]]></Value>
+			<Value><![CDATA[437]]></Value>
+			<Value><![CDATA[438]]></Value>
+			<Value><![CDATA[439]]></Value>
+			<Value><![CDATA[44]]></Value>
+			<Value><![CDATA[440]]></Value>
+			<Value><![CDATA[441]]></Value>
+			<Value><![CDATA[442]]></Value>
+			<Value><![CDATA[443]]></Value>
+			<Value><![CDATA[444]]></Value>
+			<Value><![CDATA[445]]></Value>
+			<Value><![CDATA[446]]></Value>
+			<Value><![CDATA[447]]></Value>
+			<Value><![CDATA[448]]></Value>
+			<Value><![CDATA[449]]></Value>
+			<Value><![CDATA[45]]></Value>
+			<Value><![CDATA[450]]></Value>
+			<Value><![CDATA[451]]></Value>
+			<Value><![CDATA[452]]></Value>
+			<Value><![CDATA[453]]></Value>
+			<Value><![CDATA[454]]></Value>
+			<Value><![CDATA[455]]></Value>
+			<Value><![CDATA[456]]></Value>
+			<Value><![CDATA[457]]></Value>
+			<Value><![CDATA[458]]></Value>
+			<Value><![CDATA[459]]></Value>
+			<Value><![CDATA[46]]></Value>
+			<Value><![CDATA[460]]></Value>
+			<Value><![CDATA[461]]></Value>
+			<Value><![CDATA[462]]></Value>
+			<Value><![CDATA[463]]></Value>
+			<Value><![CDATA[464]]></Value>
+			<Value><![CDATA[465]]></Value>
+			<Value><![CDATA[466]]></Value>
+			<Value><![CDATA[467]]></Value>
+			<Value><![CDATA[468]]></Value>
+			<Value><![CDATA[469]]></Value>
+			<Value><![CDATA[47]]></Value>
+			<Value><![CDATA[470]]></Value>
+			<Value><![CDATA[471]]></Value>
+			<Value><![CDATA[472]]></Value>
+			<Value><![CDATA[473]]></Value>
+			<Value><![CDATA[474]]></Value>
+			<Value><![CDATA[475]]></Value>
+			<Value><![CDATA[476]]></Value>
+			<Value><![CDATA[477]]></Value>
+			<Value><![CDATA[478]]></Value>
+			<Value><![CDATA[479]]></Value>
+			<Value><![CDATA[48]]></Value>
+			<Value><![CDATA[480]]></Value>
+			<Value><![CDATA[481]]></Value>
+			<Value><![CDATA[482]]></Value>
+			<Value><![CDATA[483]]></Value>
+			<Value><![CDATA[484]]></Value>
+			<Value><![CDATA[485]]></Value>
+			<Value><![CDATA[486]]></Value>
+			<Value><![CDATA[487]]></Value>
+			<Value><![CDATA[488]]></Value>
+			<Value><![CDATA[489]]></Value>
+			<Value><![CDATA[49]]></Value>
+			<Value><![CDATA[490]]></Value>
+			<Value><![CDATA[491]]></Value>
+			<Value><![CDATA[492]]></Value>
+			<Value><![CDATA[493]]></Value>
+			<Value><![CDATA[494]]></Value>
+			<Value><![CDATA[495]]></Value>
+			<Value><![CDATA[496]]></Value>
+			<Value><![CDATA[497]]></Value>
+			<Value><![CDATA[498]]></Value>
+			<Value><![CDATA[499]]></Value>
+			<Value><![CDATA[5]]></Value>
+			<Value><![CDATA[50]]></Value>
+			<Value><![CDATA[500]]></Value>
+			<Value><![CDATA[501]]></Value>
+			<Value><![CDATA[502]]></Value>
+			<Value><![CDATA[503]]></Value>
+			<Value><![CDATA[504]]></Value>
+			<Value><![CDATA[505]]></Value>
+			<Value><![CDATA[506]]></Value>
+			<Value><![CDATA[507]]></Value>
+			<Value><![CDATA[508]]></Value>
+			<Value><![CDATA[509]]></Value>
+			<Value><![CDATA[51]]></Value>
+			<Value><![CDATA[510]]></Value>
+			<Value><![CDATA[511]]></Value>
+			<Value><![CDATA[512]]></Value>
+			<Value><![CDATA[513]]></Value>
+			<Value><![CDATA[514]]></Value>
+			<Value><![CDATA[515]]></Value>
+			<Value><![CDATA[516]]></Value>
+			<Value><![CDATA[517]]></Value>
+			<Value><![CDATA[518]]></Value>
+			<Value><![CDATA[519]]></Value>
+			<Value><![CDATA[52]]></Value>
+			<Value><![CDATA[520]]></Value>
+			<Value><![CDATA[521]]></Value>
+			<Value><![CDATA[522]]></Value>
+			<Value><![CDATA[523]]></Value>
+			<Value><![CDATA[524]]></Value>
+			<Value><![CDATA[525]]></Value>
+			<Value><![CDATA[526]]></Value>
+			<Value><![CDATA[527]]></Value>
+			<Value><![CDATA[528]]></Value>
+			<Value><![CDATA[529]]></Value>
+			<Value><![CDATA[53]]></Value>
+			<Value><![CDATA[530]]></Value>
+			<Value><![CDATA[531]]></Value>
+			<Value><![CDATA[532]]></Value>
+			<Value><![CDATA[533]]></Value>
+			<Value><![CDATA[534]]></Value>
+			<Value><![CDATA[535]]></Value>
+			<Value><![CDATA[536]]></Value>
+			<Value><![CDATA[537]]></Value>
+			<Value><![CDATA[538]]></Value>
+			<Value><![CDATA[539]]></Value>
+			<Value><![CDATA[54]]></Value>
+			<Value><![CDATA[540]]></Value>
+			<Value><![CDATA[541]]></Value>
+			<Value><![CDATA[542]]></Value>
+			<Value><![CDATA[543]]></Value>
+			<Value><![CDATA[544]]></Value>
+			<Value><![CDATA[545]]></Value>
+			<Value><![CDATA[546]]></Value>
+			<Value><![CDATA[547]]></Value>
+			<Value><![CDATA[548]]></Value>
+			<Value><![CDATA[549]]></Value>
+			<Value><![CDATA[55]]></Value>
+			<Value><![CDATA[550]]></Value>
+			<Value><![CDATA[551]]></Value>
+			<Value><![CDATA[552]]></Value>
+			<Value><![CDATA[553]]></Value>
+			<Value><![CDATA[554]]></Value>
+			<Value><![CDATA[555]]></Value>
+			<Value><![CDATA[556]]></Value>
+			<Value><![CDATA[557]]></Value>
+			<Value><![CDATA[558]]></Value>
+			<Value><![CDATA[559]]></Value>
+			<Value><![CDATA[56]]></Value>
+			<Value><![CDATA[560]]></Value>
+			<Value><![CDATA[561]]></Value>
+			<Value><![CDATA[562]]></Value>
+			<Value><![CDATA[563]]></Value>
+			<Value><![CDATA[564]]></Value>
+			<Value><![CDATA[565]]></Value>
+			<Value><![CDATA[566]]></Value>
+			<Value><![CDATA[567]]></Value>
+			<Value><![CDATA[568]]></Value>
+			<Value><![CDATA[569]]></Value>
+			<Value><![CDATA[57]]></Value>
+			<Value><![CDATA[570]]></Value>
+			<Value><![CDATA[571]]></Value>
+			<Value><![CDATA[572]]></Value>
+			<Value><![CDATA[573]]></Value>
+			<Value><![CDATA[574]]></Value>
+			<Value><![CDATA[575]]></Value>
+			<Value><![CDATA[576]]></Value>
+			<Value><![CDATA[577]]></Value>
+			<Value><![CDATA[578]]></Value>
+			<Value><![CDATA[579]]></Value>
+			<Value><![CDATA[58]]></Value>
+			<Value><![CDATA[580]]></Value>
+			<Value><![CDATA[581]]></Value>
+			<Value><![CDATA[582]]></Value>
+			<Value><![CDATA[583]]></Value>
+			<Value><![CDATA[584]]></Value>
+			<Value><![CDATA[585]]></Value>
+			<Value><![CDATA[586]]></Value>
+			<Value><![CDATA[587]]></Value>
+			<Value><![CDATA[588]]></Value>
+			<Value><![CDATA[589]]></Value>
+			<Value><![CDATA[59]]></Value>
+			<Value><![CDATA[590]]></Value>
+			<Value><![CDATA[591]]></Value>
+			<Value><![CDATA[592]]></Value>
+			<Value><![CDATA[593]]></Value>
+			<Value><![CDATA[594]]></Value>
+			<Value><![CDATA[595]]></Value>
+			<Value><![CDATA[596]]></Value>
+			<Value><![CDATA[597]]></Value>
+			<Value><![CDATA[598]]></Value>
+			<Value><![CDATA[599]]></Value>
+			<Value><![CDATA[6]]></Value>
+			<Value><![CDATA[60]]></Value>
+			<Value><![CDATA[600]]></Value>
+			<Value><![CDATA[601]]></Value>
+			<Value><![CDATA[602]]></Value>
+			<Value><![CDATA[603]]></Value>
+			<Value><![CDATA[604]]></Value>
+			<Value><![CDATA[605]]></Value>
+			<Value><![CDATA[606]]></Value>
+			<Value><![CDATA[607]]></Value>
+			<Value><![CDATA[608]]></Value>
+			<Value><![CDATA[609]]></Value>
+			<Value><![CDATA[61]]></Value>
+			<Value><![CDATA[610]]></Value>
+			<Value><![CDATA[611]]></Value>
+			<Value><![CDATA[612]]></Value>
+			<Value><![CDATA[613]]></Value>
+			<Value><![CDATA[614]]></Value>
+			<Value><![CDATA[615]]></Value>
+			<Value><![CDATA[616]]></Value>
+			<Value><![CDATA[617]]></Value>
+			<Value><![CDATA[618]]></Value>
+			<Value><![CDATA[619]]></Value>
+			<Value><![CDATA[62]]></Value>
+			<Value><![CDATA[620]]></Value>
+			<Value><![CDATA[621]]></Value>
+			<Value><![CDATA[622]]></Value>
+			<Value><![CDATA[623]]></Value>
+			<Value><![CDATA[624]]></Value>
+			<Value><![CDATA[625]]></Value>
+			<Value><![CDATA[626]]></Value>
+			<Value><![CDATA[627]]></Value>
+			<Value><![CDATA[628]]></Value>
+			<Value><![CDATA[629]]></Value>
+			<Value><![CDATA[63]]></Value>
+			<Value><![CDATA[630]]></Value>
+			<Value><![CDATA[631]]></Value>
+			<Value><![CDATA[632]]></Value>
+			<Value><![CDATA[633]]></Value>
+			<Value><![CDATA[634]]></Value>
+			<Value><![CDATA[635]]></Value>
+			<Value><![CDATA[636]]></Value>
+			<Value><![CDATA[637]]></Value>
+			<Value><![CDATA[638]]></Value>
+			<Value><![CDATA[639]]></Value>
+			<Value><![CDATA[64]]></Value>
+			<Value><![CDATA[640]]></Value>
+			<Value><![CDATA[641]]></Value>
+			<Value><![CDATA[642]]></Value>
+			<Value><![CDATA[643]]></Value>
+			<Value><![CDATA[644]]></Value>
+			<Value><![CDATA[645]]></Value>
+			<Value><![CDATA[646]]></Value>
+			<Value><![CDATA[647]]></Value>
+			<Value><![CDATA[648]]></Value>
+			<Value><![CDATA[649]]></Value>
+			<Value><![CDATA[65]]></Value>
+			<Value><![CDATA[650]]></Value>
+			<Value><![CDATA[651]]></Value>
+			<Value><![CDATA[652]]></Value>
+			<Value><![CDATA[653]]></Value>
+			<Value><![CDATA[654]]></Value>
+			<Value><![CDATA[655]]></Value>
+			<Value><![CDATA[656]]></Value>
+			<Value><![CDATA[657]]></Value>
+			<Value><![CDATA[658]]></Value>
+			<Value><![CDATA[659]]></Value>
+			<Value><![CDATA[66]]></Value>
+			<Value><![CDATA[660]]></Value>
+			<Value><![CDATA[661]]></Value>
+			<Value><![CDATA[662]]></Value>
+			<Value><![CDATA[663]]></Value>
+			<Value><![CDATA[664]]></Value>
+			<Value><![CDATA[665]]></Value>
+			<Value><![CDATA[666]]></Value>
+			<Value><![CDATA[667]]></Value>
+			<Value><![CDATA[668]]></Value>
+			<Value><![CDATA[669]]></Value>
+			<Value><![CDATA[67]]></Value>
+			<Value><![CDATA[670]]></Value>
+			<Value><![CDATA[671]]></Value>
+			<Value><![CDATA[672]]></Value>
+			<Value><![CDATA[673]]></Value>
+			<Value><![CDATA[674]]></Value>
+			<Value><![CDATA[675]]></Value>
+			<Value><![CDATA[676]]></Value>
+			<Value><![CDATA[677]]></Value>
+			<Value><![CDATA[678]]></Value>
+			<Value><![CDATA[679]]></Value>
+			<Value><![CDATA[68]]></Value>
+			<Value><![CDATA[680]]></Value>
+			<Value><![CDATA[681]]></Value>
+			<Value><![CDATA[682]]></Value>
+			<Value><![CDATA[683]]></Value>
+			<Value><![CDATA[684]]></Value>
+			<Value><![CDATA[685]]></Value>
+			<Value><![CDATA[686]]></Value>
+			<Value><![CDATA[687]]></Value>
+			<Value><![CDATA[688]]></Value>
+			<Value><![CDATA[689]]></Value>
+			<Value><![CDATA[69]]></Value>
+			<Value><![CDATA[690]]></Value>
+			<Value><![CDATA[691]]></Value>
+			<Value><![CDATA[692]]></Value>
+			<Value><![CDATA[693]]></Value>
+			<Value><![CDATA[694]]></Value>
+			<Value><![CDATA[695]]></Value>
+			<Value><![CDATA[696]]></Value>
+			<Value><![CDATA[697]]></Value>
+			<Value><![CDATA[698]]></Value>
+			<Value><![CDATA[699]]></Value>
+			<Value><![CDATA[7]]></Value>
+			<Value><![CDATA[70]]></Value>
+			<Value><![CDATA[700]]></Value>
+			<Value><![CDATA[701]]></Value>
+			<Value><![CDATA[702]]></Value>
+			<Value><![CDATA[703]]></Value>
+			<Value><![CDATA[704]]></Value>
+			<Value><![CDATA[705]]></Value>
+			<Value><![CDATA[706]]></Value>
+			<Value><![CDATA[707]]></Value>
+			<Value><![CDATA[708]]></Value>
+			<Value><![CDATA[709]]></Value>
+			<Value><![CDATA[71]]></Value>
+			<Value><![CDATA[710]]></Value>
+			<Value><![CDATA[711]]></Value>
+			<Value><![CDATA[712]]></Value>
+			<Value><![CDATA[713]]></Value>
+			<Value><![CDATA[714]]></Value>
+			<Value><![CDATA[715]]></Value>
+			<Value><![CDATA[716]]></Value>
+			<Value><![CDATA[717]]></Value>
+			<Value><![CDATA[718]]></Value>
+			<Value><![CDATA[719]]></Value>
+			<Value><![CDATA[72]]></Value>
+			<Value><![CDATA[720]]></Value>
+			<Value><![CDATA[721]]></Value>
+			<Value><![CDATA[722]]></Value>
+			<Value><![CDATA[723]]></Value>
+			<Value><![CDATA[724]]></Value>
+			<Value><![CDATA[725]]></Value>
+			<Value><![CDATA[726]]></Value>
+			<Value><![CDATA[727]]></Value>
+			<Value><![CDATA[728]]></Value>
+			<Value><![CDATA[729]]></Value>
+			<Value><![CDATA[73]]></Value>
+			<Value><![CDATA[730]]></Value>
+			<Value><![CDATA[731]]></Value>
+			<Value><![CDATA[732]]></Value>
+			<Value><![CDATA[733]]></Value>
+			<Value><![CDATA[734]]></Value>
+			<Value><![CDATA[735]]></Value>
+			<Value><![CDATA[736]]></Value>
+			<Value><![CDATA[737]]></Value>
+			<Value><![CDATA[738]]></Value>
+			<Value><![CDATA[739]]></Value>
+			<Value><![CDATA[74]]></Value>
+			<Value><![CDATA[740]]></Value>
+			<Value><![CDATA[741]]></Value>
+			<Value><![CDATA[742]]></Value>
+			<Value><![CDATA[743]]></Value>
+			<Value><![CDATA[744]]></Value>
+			<Value><![CDATA[745]]></Value>
+			<Value><![CDATA[746]]></Value>
+			<Value><![CDATA[747]]></Value>
+			<Value><![CDATA[748]]></Value>
+			<Value><![CDATA[749]]></Value>
+			<Value><![CDATA[75]]></Value>
+			<Value><![CDATA[750]]></Value>
+			<Value><![CDATA[751]]></Value>
+			<Value><![CDATA[752]]></Value>
+			<Value><![CDATA[753]]></Value>
+			<Value><![CDATA[754]]></Value>
+			<Value><![CDATA[755]]></Value>
+			<Value><![CDATA[756]]></Value>
+			<Value><![CDATA[757]]></Value>
+			<Value><![CDATA[758]]></Value>
+			<Value><![CDATA[759]]></Value>
+			<Value><![CDATA[76]]></Value>
+			<Value><![CDATA[760]]></Value>
+			<Value><![CDATA[761]]></Value>
+			<Value><![CDATA[762]]></Value>
+			<Value><![CDATA[763]]></Value>
+			<Value><![CDATA[764]]></Value>
+			<Value><![CDATA[765]]></Value>
+			<Value><![CDATA[766]]></Value>
+			<Value><![CDATA[767]]></Value>
+			<Value><![CDATA[768]]></Value>
+			<Value><![CDATA[769]]></Value>
+			<Value><![CDATA[77]]></Value>
+			<Value><![CDATA[770]]></Value>
+			<Value><![CDATA[771]]></Value>
+			<Value><![CDATA[772]]></Value>
+			<Value><![CDATA[773]]></Value>
+			<Value><![CDATA[774]]></Value>
+			<Value><![CDATA[775]]></Value>
+			<Value><![CDATA[776]]></Value>
+			<Value><![CDATA[777]]></Value>
+			<Value><![CDATA[778]]></Value>
+			<Value><![CDATA[779]]></Value>
+			<Value><![CDATA[78]]></Value>
+			<Value><![CDATA[780]]></Value>
+			<Value><![CDATA[781]]></Value>
+			<Value><![CDATA[782]]></Value>
+			<Value><![CDATA[783]]></Value>
+			<Value><![CDATA[784]]></Value>
+			<Value><![CDATA[785]]></Value>
+			<Value><![CDATA[786]]></Value>
+			<Value><![CDATA[787]]></Value>
+			<Value><![CDATA[788]]></Value>
+			<Value><![CDATA[789]]></Value>
+			<Value><![CDATA[79]]></Value>
+			<Value><![CDATA[790]]></Value>
+			<Value><![CDATA[791]]></Value>
+			<Value><![CDATA[792]]></Value>
+			<Value><![CDATA[793]]></Value>
+			<Value><![CDATA[794]]></Value>
+			<Value><![CDATA[795]]></Value>
+			<Value><![CDATA[796]]></Value>
+			<Value><![CDATA[797]]></Value>
+			<Value><![CDATA[798]]></Value>
+			<Value><![CDATA[799]]></Value>
+			<Value><![CDATA[8]]></Value>
+			<Value><![CDATA[80]]></Value>
+			<Value><![CDATA[800]]></Value>
+			<Value><![CDATA[801]]></Value>
+			<Value><![CDATA[802]]></Value>
+			<Value><![CDATA[803]]></Value>
+			<Value><![CDATA[804]]></Value>
+			<Value><![CDATA[805]]></Value>
+			<Value><![CDATA[806]]></Value>
+			<Value><![CDATA[807]]></Value>
+			<Value><![CDATA[808]]></Value>
+			<Value><![CDATA[809]]></Value>
+			<Value><![CDATA[81]]></Value>
+			<Value><![CDATA[810]]></Value>
+			<Value><![CDATA[811]]></Value>
+			<Value><![CDATA[812]]></Value>
+			<Value><![CDATA[813]]></Value>
+			<Value><![CDATA[814]]></Value>
+			<Value><![CDATA[815]]></Value>
+			<Value><![CDATA[816]]></Value>
+			<Value><![CDATA[817]]></Value>
+			<Value><![CDATA[818]]></Value>
+			<Value><![CDATA[819]]></Value>
+			<Value><![CDATA[82]]></Value>
+			<Value><![CDATA[820]]></Value>
+			<Value><![CDATA[821]]></Value>
+			<Value><![CDATA[822]]></Value>
+			<Value><![CDATA[823]]></Value>
+			<Value><![CDATA[824]]></Value>
+			<Value><![CDATA[825]]></Value>
+			<Value><![CDATA[826]]></Value>
+			<Value><![CDATA[827]]></Value>
+			<Value><![CDATA[828]]></Value>
+			<Value><![CDATA[829]]></Value>
+			<Value><![CDATA[83]]></Value>
+			<Value><![CDATA[830]]></Value>
+			<Value><![CDATA[831]]></Value>
+			<Value><![CDATA[832]]></Value>
+			<Value><![CDATA[833]]></Value>
+			<Value><![CDATA[834]]></Value>
+			<Value><![CDATA[835]]></Value>
+			<Value><![CDATA[836]]></Value>
+			<Value><![CDATA[837]]></Value>
+			<Value><![CDATA[838]]></Value>
+			<Value><![CDATA[839]]></Value>
+			<Value><![CDATA[84]]></Value>
+			<Value><![CDATA[840]]></Value>
+			<Value><![CDATA[841]]></Value>
+			<Value><![CDATA[842]]></Value>
+			<Value><![CDATA[843]]></Value>
+			<Value><![CDATA[844]]></Value>
+			<Value><![CDATA[845]]></Value>
+			<Value><![CDATA[846]]></Value>
+			<Value><![CDATA[847]]></Value>
+			<Value><![CDATA[848]]></Value>
+			<Value><![CDATA[849]]></Value>
+			<Value><![CDATA[85]]></Value>
+			<Value><![CDATA[850]]></Value>
+			<Value><![CDATA[851]]></Value>
+			<Value><![CDATA[852]]></Value>
+			<Value><![CDATA[853]]></Value>
+			<Value><![CDATA[854]]></Value>
+			<Value><![CDATA[855]]></Value>
+			<Value><![CDATA[856]]></Value>
+			<Value><![CDATA[857]]></Value>
+			<Value><![CDATA[858]]></Value>
+			<Value><![CDATA[859]]></Value>
+			<Value><![CDATA[86]]></Value>
+			<Value><![CDATA[860]]></Value>
+			<Value><![CDATA[861]]></Value>
+			<Value><![CDATA[862]]></Value>
+			<Value><![CDATA[863]]></Value>
+			<Value><![CDATA[864]]></Value>
+			<Value><![CDATA[865]]></Value>
+			<Value><![CDATA[866]]></Value>
+			<Value><![CDATA[867]]></Value>
+			<Value><![CDATA[868]]></Value>
+			<Value><![CDATA[869]]></Value>
+			<Value><![CDATA[87]]></Value>
+			<Value><![CDATA[870]]></Value>
+			<Value><![CDATA[871]]></Value>
+			<Value><![CDATA[872]]></Value>
+			<Value><![CDATA[873]]></Value>
+			<Value><![CDATA[874]]></Value>
+			<Value><![CDATA[875]]></Value>
+			<Value><![CDATA[876]]></Value>
+			<Value><![CDATA[877]]></Value>
+			<Value><![CDATA[878]]></Value>
+			<Value><![CDATA[879]]></Value>
+			<Value><![CDATA[88]]></Value>
+			<Value><![CDATA[880]]></Value>
+			<Value><![CDATA[881]]></Value>
+			<Value><![CDATA[882]]></Value>
+			<Value><![CDATA[883]]></Value>
+			<Value><![CDATA[884]]></Value>
+			<Value><![CDATA[885]]></Value>
+			<Value><![CDATA[886]]></Value>
+			<Value><![CDATA[887]]></Value>
+			<Value><![CDATA[888]]></Value>
+			<Value><![CDATA[889]]></Value>
+			<Value><![CDATA[89]]></Value>
+			<Value><![CDATA[890]]></Value>
+			<Value><![CDATA[891]]></Value>
+			<Value><![CDATA[892]]></Value>
+			<Value><![CDATA[893]]></Value>
+			<Value><![CDATA[894]]></Value>
+			<Value><![CDATA[895]]></Value>
+			<Value><![CDATA[896]]></Value>
+			<Value><![CDATA[897]]></Value>
+			<Value><![CDATA[898]]></Value>
+			<Value><![CDATA[899]]></Value>
+			<Value><![CDATA[9]]></Value>
+			<Value><![CDATA[90]]></Value>
+			<Value><![CDATA[900]]></Value>
+			<Value><![CDATA[901]]></Value>
+			<Value><![CDATA[902]]></Value>
+			<Value><![CDATA[903]]></Value>
+			<Value><![CDATA[904]]></Value>
+			<Value><![CDATA[905]]></Value>
+			<Value><![CDATA[906]]></Value>
+			<Value><![CDATA[907]]></Value>
+			<Value><![CDATA[908]]></Value>
+			<Value><![CDATA[909]]></Value>
+			<Value><![CDATA[91]]></Value>
+			<Value><![CDATA[910]]></Value>
+			<Value><![CDATA[911]]></Value>
+			<Value><![CDATA[912]]></Value>
+			<Value><![CDATA[913]]></Value>
+			<Value><![CDATA[914]]></Value>
+			<Value><![CDATA[915]]></Value>
+			<Value><![CDATA[916]]></Value>
+			<Value><![CDATA[917]]></Value>
+			<Value><![CDATA[918]]></Value>
+			<Value><![CDATA[919]]></Value>
+			<Value><![CDATA[92]]></Value>
+			<Value><![CDATA[920]]></Value>
+			<Value><![CDATA[921]]></Value>
+			<Value><![CDATA[922]]></Value>
+			<Value><![CDATA[923]]></Value>
+			<Value><![CDATA[924]]></Value>
+			<Value><![CDATA[925]]></Value>
+			<Value><![CDATA[926]]></Value>
+			<Value><![CDATA[927]]></Value>
+			<Value><![CDATA[928]]></Value>
+			<Value><![CDATA[929]]></Value>
+			<Value><![CDATA[93]]></Value>
+			<Value><![CDATA[930]]></Value>
+			<Value><![CDATA[931]]></Value>
+			<Value><![CDATA[932]]></Value>
+			<Value><![CDATA[933]]></Value>
+			<Value><![CDATA[934]]></Value>
+			<Value><![CDATA[935]]></Value>
+			<Value><![CDATA[936]]></Value>
+			<Value><![CDATA[937]]></Value>
+			<Value><![CDATA[938]]></Value>
+			<Value><![CDATA[939]]></Value>
+			<Value><![CDATA[94]]></Value>
+			<Value><![CDATA[940]]></Value>
+			<Value><![CDATA[941]]></Value>
+			<Value><![CDATA[942]]></Value>
+			<Value><![CDATA[943]]></Value>
+			<Value><![CDATA[944]]></Value>
+			<Value><![CDATA[945]]></Value>
+			<Value><![CDATA[946]]></Value>
+			<Value><![CDATA[947]]></Value>
+			<Value><![CDATA[948]]></Value>
+			<Value><![CDATA[949]]></Value>
+			<Value><![CDATA[95]]></Value>
+			<Value><![CDATA[950]]></Value>
+			<Value><![CDATA[951]]></Value>
+			<Value><![CDATA[952]]></Value>
+			<Value><![CDATA[953]]></Value>
+			<Value><![CDATA[954]]></Value>
+			<Value><![CDATA[955]]></Value>
+			<Value><![CDATA[956]]></Value>
+			<Value><![CDATA[957]]></Value>
+			<Value><![CDATA[958]]></Value>
+			<Value><![CDATA[959]]></Value>
+			<Value><![CDATA[96]]></Value>
+			<Value><![CDATA[960]]></Value>
+			<Value><![CDATA[961]]></Value>
+			<Value><![CDATA[962]]></Value>
+			<Value><![CDATA[963]]></Value>
+			<Value><![CDATA[964]]></Value>
+			<Value><![CDATA[965]]></Value>
+			<Value><![CDATA[966]]></Value>
+			<Value><![CDATA[967]]></Value>
+			<Value><![CDATA[968]]></Value>
+			<Value><![CDATA[969]]></Value>
+			<Value><![CDATA[97]]></Value>
+			<Value><![CDATA[970]]></Value>
+			<Value><![CDATA[971]]></Value>
+			<Value><![CDATA[972]]></Value>
+			<Value><![CDATA[973]]></Value>
+			<Value><![CDATA[974]]></Value>
+			<Value><![CDATA[975]]></Value>
+			<Value><![CDATA[976]]></Value>
+			<Value><![CDATA[977]]></Value>
+			<Value><![CDATA[978]]></Value>
+			<Value><![CDATA[979]]></Value>
+			<Value><![CDATA[98]]></Value>
+			<Value><![CDATA[980]]></Value>
+			<Value><![CDATA[981]]></Value>
+			<Value><![CDATA[982]]></Value>
+			<Value><![CDATA[983]]></Value>
+			<Value><![CDATA[984]]></Value>
+			<Value><![CDATA[985]]></Value>
+			<Value><![CDATA[986]]></Value>
+			<Value><![CDATA[987]]></Value>
+			<Value><![CDATA[988]]></Value>
+			<Value><![CDATA[989]]></Value>
+			<Value><![CDATA[99]]></Value>
+			<Value><![CDATA[990]]></Value>
+			<Value><![CDATA[991]]></Value>
+			<Value><![CDATA[992]]></Value>
+			<Value><![CDATA[993]]></Value>
+			<Value><![CDATA[994]]></Value>
+			<Value><![CDATA[995]]></Value>
+			<Value><![CDATA[996]]></Value>
+			<Value><![CDATA[997]]></Value>
+			<Value><![CDATA[998]]></Value>
+			<Value><![CDATA[999]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>
