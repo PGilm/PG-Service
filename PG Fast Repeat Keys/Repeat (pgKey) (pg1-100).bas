@@ -4,7 +4,7 @@ Option Explicit
 
 ' Fast Repeat Keys (C) PG Service 2023
 ' Repeat a directional keypress up to 100 times!
-' Say: "repeat <key> <1-100>"
+' Say: "Repeat <pgKey> <pg1-100>"
 Sub Main
 	Dim x as Integer
 	For x = 1 To CInt(ListVar2)

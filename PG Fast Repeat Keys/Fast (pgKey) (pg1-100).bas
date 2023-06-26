@@ -4,7 +4,7 @@ Option Explicit
 
 ' Fast Repeat Keys (C) PG Service
 ' Repeat a directional keypress up to 100 times!
-' Say: "fast <key> <1-100>"
+' Say: "Fast <pgKey> <pg1-100>"
 Sub Main
 	Dim j As String ' output
 	Dim k As String ' parsed input
