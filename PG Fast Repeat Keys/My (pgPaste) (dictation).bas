@@ -8,14 +8,14 @@ Option Explicit
 
 Sub Main
 	If UtilityProvider.IsDebugMode Then  '  for debugging 
-		UtilityProvider.SetContextValue ( 0 , "camel" )
-		UtilityProvider.SetContextValue ( 1 , "This is a test of the microphone system" )
-		MsgBox "This is current: "+Clipboard ' 
+		UtilityProvider.SetContextValue ( 0 , "title" )
+		UtilityProvider.SetContextValue ( 1 , "This is a test of a Case change" )
+		MsgBox "This is the current clipboard: "+Clipboard
 		Wait .2
 	End If
 
 	Dim clipOrig As String
-	clipOrig=Clipboard
+	clipOrig=Clipboard ' save current clipboard
 
 	Select Case ListVar1
 		Case "all caps" 'paste dictation in "ALL CAPS"
@@ -29,11 +29,13 @@ Sub Main
 					Mid(tempStr(i),2)&" "
 			Next
 
-			xWords=Array("A","Is","Of","The")
-			For Each word In xWords
+			xWords=Array("A","An","And","Is","Nor", _
+					"Of","Or","The") ' Add? "As","But","For","If","So","Yet",
+			For Each word In xWords ' Above words don't get caps in Title Case
     			titleCase=Replace(titleCase," "&word&" ", _
 					" "&LCase(word)&" ")
 			Next
+
 			Clipboard(titleCase)
 
 		Case "camel" 'paste dictation in "camelCase"
@@ -57,16 +59,16 @@ Sub Main
 	End Select
 	Wait .3
 
-		If UtilityProvider.IsDebugMode Then MsgBox("New: "+Clipboard)
+		If UtilityProvider.IsDebugMode Then MsgBox("New "+ListVar1+": "+Clipboard)
 
-	'If UtilityProvider.IsDebugMode=0 Then SendKeys "^v",1 ' 
-	If UtilityProvider.IsDebugMode=0 Then SendSystemKeys "{Ctrl+v}" ' 
+	'If UtilityProvider.IsDebugMode=0 Then SendKeys "^v",1 ' Perhaps faster?
+	If UtilityProvider.IsDebugMode=0 Then SendSystemKeys "{Ctrl+v}" ' Perhaps more dependable?
 
 	Wait .3
 	Clipboard(clipOrig)
 	Wait .3
 
-		If UtilityProvider.IsDebugMode Then MsgBox ("Ending: "+Clipboard)
+		If UtilityProvider.IsDebugMode Then MsgBox ("Restored Clipboard: "+Clipboard)
 
 End Sub
 '
