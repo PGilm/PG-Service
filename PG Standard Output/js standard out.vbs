@@ -9,7 +9,7 @@ Sub Main
 	a = InputBox("First number: ",,"23")
 	b = InputBox("Second number: ",,"45")
 	Set sh = CreateObject("WScript.Shell")
-	Set ex = sh.Exec(Environ("ComSpec") & " /C cScript /nologo ""C:\Users\Philip\add.js"" " & a & " " & b)
+	Set ex = sh.Exec(Environ("ComSpec") & " /C node ""C:\Users\Philip\add.js"" " & a & " " & b)
 	result = ex.StdOut.ReadAll()
 	MsgBox """" & result & """"
 End Sub

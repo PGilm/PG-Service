@@ -6,10 +6,10 @@ Sub Main
 	Dim a As Integer
 	Dim b As Integer
 	Dim result As String
-	a = 2
-	b = 3
+	a = InputBox("First number: ",,"2")
+	b = InputBox("Second number: ",,"3")
 	Set sh = CreateObject("WScript.Shell")
-	Set ex = sh.Exec(Environ("ComSpec") & " /C cScript ""C:\Users\Philip\add.vbs"" " & a & " " & b)
-	result = Mid(ex.StdOut.ReadAll(), 111)
+	Set ex = sh.Exec(Environ("ComSpec") & " /C cScript /nologo ""C:\Users\Philip\add.vbs"" " & a & " " & b)
+	result = ex.StdOut.ReadAll()
 	MsgBox """" & result & """"
 End Sub

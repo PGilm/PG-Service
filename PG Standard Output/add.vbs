@@ -5,8 +5,8 @@
  	b=cint(WScript.Arguments.Item(1))
  	MsgBox "You entered " & a & " and " & b
  Else ' if none, get two integers
- 	a = cInt(InputBox("Enter first integer:"))
- 	b = cInt(InputBox("Enter second integer:"))
+ 	a = cInt(InputBox("Enter first integer:",,"2"))
+ 	b = cInt(InputBox("Enter second integer:",,"3"))
  	MsgBox "You entered " & a & " + " & b
  End If
  x=a+b ' result
